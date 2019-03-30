@@ -10,13 +10,19 @@ class App extends React.Component {
     videos: [],
     selectedVideo: null
   };
+  componentDidMount() {
+    this.handleSearchBarFormSubmit("stephen grider");
+  }
   handleSearchBarFormSubmit = async term => {
     const response = await youtube.get("/search", {
       params: {
         q: term
       }
     });
-    this.setState({ videos: response.data.items });
+    this.setState({
+      videos: response.data.items,
+      selectedVideo: response.data.items[0]
+    });
   };
 
   handleSelectedVideo = video => {
@@ -26,17 +32,17 @@ class App extends React.Component {
     return (
       <div className="ui container" style={{ marginTop: "1rem" }}>
         <SearchBar onSearchBarFormSubmit={this.handleSearchBarFormSubmit} />
-        {this.state.videos.length} videos from server
-        <div className="row">
-          <div className="eleven wide columns">
-            <VideoDetail displayVideo={this.state.selectedVideo} />
-            <br />
-          </div>
-          <div className="five wide column">
-            <VideoListWrapper
-              onVideoSelect={this.handleSelectedVideo}
-              videoData={this.state.videos}
-            />
+        <div className="ui grid">
+          <div className="ui row">
+            <div className="ten wide column">
+              <VideoDetail displayVideo={this.state.selectedVideo} />
+            </div>
+            <div className="six wide column">
+              <VideoListWrapper
+                onVideoSelect={this.handleSelectedVideo}
+                videoData={this.state.videos}
+              />
+            </div>
           </div>
         </div>
       </div>
