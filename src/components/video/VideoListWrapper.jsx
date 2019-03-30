@@ -1,17 +1,14 @@
 import React from "react";
 import VideoItem from "./VideoItem";
-
-// class VideoListWrapper extends React.Component {
-//   state = {};
-//   render() {
-
-//     return "VideoListWrapper";
-//   }
-// }
+import VideoListLoader from "./VideoListLoader";
 
 const VideoListWrapper = props => {
   const { videoData, onVideoSelect } = props;
+
+  if (!videoData) return <VideoListLoader />;
+
   const renderedVideoItems = videoData.map(video => {
+    console.log("jhff");
     return (
       <div key={video.etag} className="ui inverted segment">
         <div className="ui inverted relaxed divided list">
@@ -27,6 +24,11 @@ const VideoListWrapper = props => {
 export default VideoListWrapper;
 
 /*
+ <div key={video.etag} className="ui inverted segment">
+        <div className="ui inverted relaxed divided list">
+          <VideoItem onVideoSelect={onVideoSelect} videoItem={video} />
+        </div>
+      </div> 
 
 
 */
