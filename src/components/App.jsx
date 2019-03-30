@@ -7,7 +7,8 @@ import youtube from "../apis/youtube";
 
 class App extends React.Component {
   state = {
-    videos: []
+    videos: [],
+    selectedVideo: null
   };
   handleSearchBarFormSubmit = async term => {
     const response = await youtube.get("/search", {
@@ -15,10 +16,12 @@ class App extends React.Component {
         q: term
       }
     });
-    console.log(response);
     this.setState({ videos: response.data.items });
   };
 
+  handleSelectedVideo = video => {
+    this.setState({ selectedVideo: video });
+  };
   render() {
     return (
       <div className="ui container" style={{ marginTop: "1rem" }}>
@@ -26,10 +29,14 @@ class App extends React.Component {
         {this.state.videos.length} videos from server
         <div className="row">
           <div className="eleven wide columns">
-            <VideoDetail />
+            <VideoDetail displayVideo={this.state.selectedVideo} />
+            <br />
           </div>
           <div className="five wide column">
-            <VideoListWrapper />
+            <VideoListWrapper
+              onVideoSelect={this.handleSelectedVideo}
+              videoData={this.state.videos}
+            />
           </div>
         </div>
       </div>
