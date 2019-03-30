@@ -2,6 +2,7 @@ import React from "react";
 import SearchBar from "./SearchBar";
 import VideoDetail from "./video/VideoDetail";
 import VideoListWrapper from "./video/VideoListWrapper";
+import VideoListLoader from "./video/VideoListLoader";
 
 import youtube from "../apis/youtube";
 
@@ -13,16 +14,18 @@ class App extends React.Component {
   componentDidMount() {
     this.handleSearchBarFormSubmit("stephen grider");
   }
-  handleSearchBarFormSubmit = async term => {
-    const response = await youtube.get("/search", {
-      params: {
-        q: term
-      }
-    });
-    this.setState({
-      videos: response.data.items,
-      selectedVideo: response.data.items[0]
-    });
+  handleSearchBarFormSubmit = term => {
+    setTimeout(async () => {
+      const response = await youtube.get("/search", {
+        params: {
+          q: term
+        }
+      });
+      this.setState({
+        videos: response.data.items,
+        selectedVideo: response.data.items[0]
+      });
+    }, 3000);
   };
 
   handleSelectedVideo = video => {
@@ -38,10 +41,14 @@ class App extends React.Component {
               <VideoDetail displayVideo={this.state.selectedVideo} />
             </div>
             <div className="six wide column">
-              <VideoListWrapper
-                onVideoSelect={this.handleSelectedVideo}
-                videoData={this.state.videos}
-              />
+              {!this.state.videos.length ? (
+                <VideoListLoader />
+              ) : (
+                <VideoListWrapper
+                  onVideoSelect={this.handleSelectedVideo}
+                  videoData={this.state.videos}
+                />
+              )}
             </div>
           </div>
         </div>
