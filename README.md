@@ -2,6 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Preview
 
+![Screenshot](React-Mini-YouTube.gif)
 
 ## Available Scripts
 
